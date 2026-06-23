@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Check for npm dependency updates (i.e. Electron)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/New_York"
+    labels:
+      - "dependencies"
+      - "electron"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
