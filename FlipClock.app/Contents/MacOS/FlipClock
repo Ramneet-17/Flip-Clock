@@ -1,20 +1,12 @@
 #!/bin/bash
 # FlipClock launcher — runs the Electron app silently
 
-# Get the directory where the .app bundle lives
+# Hardcode the path to Node/npm (via NVM)
+export PATH="/Users/ramneetsingh/.nvm/versions/node/v22.16.0/bin:/usr/local/bin:/opt/homebrew/bin:$PATH"
+
+# Navigate to the project directory (relative to .app location)
 APP_DIR="$(cd "$(dirname "$0")/../../.." && pwd)"
-
-# Source shell profile to get npm/node in PATH
-if [ -f "$HOME/.zshrc" ]; then
-  source "$HOME/.zshrc" 2>/dev/null
-elif [ -f "$HOME/.bash_profile" ]; then
-  source "$HOME/.bash_profile" 2>/dev/null
-elif [ -f "$HOME/.profile" ]; then
-  source "$HOME/.profile" 2>/dev/null
-fi
-
-# Also check common Node.js install locations
-export PATH="/usr/local/bin:/opt/homebrew/bin:$HOME/.nvm/versions/node/$(ls $HOME/.nvm/versions/node 2>/dev/null | tail -1)/bin:$PATH"
-
 cd "$APP_DIR"
-npm start &>/dev/null &
+
+# Launch Electron in the background and detach
+nohup npm start &>/dev/null &
