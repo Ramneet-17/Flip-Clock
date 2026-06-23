@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: read
+
 jobs:
   build:
     # Run this job on the latest macOS runner (best for Electron apps targeting macOS)
