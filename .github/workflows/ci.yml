@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    # Run this job on the latest macOS runner (best for Electron apps targeting macOS)
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: 'npm'
+
+    - name: Install Dependencies
+      # 'npm ci' is preferred for CI environments over 'npm install'
+      # It strictly uses package-lock.json and fails if there are discrepancies.
+      run: npm ci
+
+    # If you later add a build step (like electron-builder) or tests, 
+    # you can uncomment and configure the lines below:
+    # - name: Run Build
+    #   run: npm run build
