@@ -1,6 +1,6 @@
 # ⏰ Flip Clock
 
-A beautiful, full-screen flip clock desktop application for macOS — built with Electron. No browser, no URL bar — just a stunning, minimal flip clock that covers your entire screen.
+A stunning and minimal full screen flip clock desktop application for macOS built with Electron. It provides a clean and realistic animated time display that covers your entire screen.
 
 ![Flip Clock Screenshot](screenshot.png)
 
