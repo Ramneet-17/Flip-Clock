@@ -1,0 +1,12 @@
+{
+  "name": "flip-clock",
+  "version": "1.0.0",
+  "description": "A beautiful full-screen flip clock desktop app for macOS",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^35.0.0"
+  }
+}

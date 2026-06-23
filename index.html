@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flip Clock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container" id="appContainer">
+
+    <!-- Settings Button -->
+    <button class="settings-btn" id="settingsBtn" title="Settings (S)">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
+
+    <!-- Quit Button -->
+    <button class="quit-btn" id="quitBtn" title="Quit (⌘Q)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Clock Container -->
+    <div class="clock-wrapper">
+      <div class="clock-container" id="clockContainer">
+
+        <!-- Hours -->
+        <div class="flip-group">
+          <div class="flip-card" id="hourTens">
+            <div class="flip-card-inner">
+              <div class="card-face card-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-bottom">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-bottom">
+                <span class="digit">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="flip-card" id="hourOnes">
+            <div class="flip-card-inner">
+              <div class="card-face card-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-bottom">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-bottom">
+                <span class="digit">0</span>
+              </div>
+            </div>
+          </div>
+          <span class="group-label">HOURS</span>
+        </div>
+
+        <!-- Separator -->
+        <div class="separator">
+          <div class="sep-dot"></div>
+          <div class="sep-dot"></div>
+        </div>
+
+        <!-- Minutes -->
+        <div class="flip-group">
+          <div class="flip-card" id="minTens">
+            <div class="flip-card-inner">
+              <div class="card-face card-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-bottom">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-bottom">
+                <span class="digit">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="flip-card" id="minOnes">
+            <div class="flip-card-inner">
+              <div class="card-face card-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-bottom">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-bottom">
+                <span class="digit">0</span>
+              </div>
+            </div>
+          </div>
+          <span class="group-label">MINUTES</span>
+        </div>
+
+        <!-- Separator -->
+        <div class="separator">
+          <div class="sep-dot"></div>
+          <div class="sep-dot"></div>
+        </div>
+
+        <!-- Seconds -->
+        <div class="flip-group">
+          <div class="flip-card" id="secTens">
+            <div class="flip-card-inner">
+              <div class="card-face card-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-bottom">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-bottom">
+                <span class="digit">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="flip-card" id="secOnes">
+            <div class="flip-card-inner">
+              <div class="card-face card-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-bottom">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-top">
+                <span class="digit">0</span>
+              </div>
+              <div class="card-face card-flap-bottom">
+                <span class="digit">0</span>
+              </div>
+            </div>
+          </div>
+          <span class="group-label">SECONDS</span>
+        </div>
+
+      </div>
+
+      <!-- AM/PM indicator -->
+      <div class="ampm-indicator" id="ampmIndicator"></div>
+
+      <!-- Date Display -->
+      <div class="date-display" id="dateDisplay"></div>
+
+      <!-- Timezone info -->
+      <div class="timezone-display" id="timezoneDisplay"></div>
+    </div>
+
+    <!-- Settings Overlay -->
+    <div class="settings-overlay" id="settingsOverlay">
+      <div class="settings-panel">
+        <div class="settings-header">
+          <h2>Settings</h2>
+          <button class="settings-close" id="settingsClose">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="settings-body">
+          <!-- Time Format -->
+          <div class="setting-group">
+            <label class="setting-label">Time Format</label>
+            <div class="toggle-switch-container">
+              <span class="toggle-label" id="label12h">12H</span>
+              <div class="toggle-switch" id="formatToggle">
+                <div class="toggle-thumb"></div>
+              </div>
+              <span class="toggle-label" id="label24h">24H</span>
+            </div>
+          </div>
+
+          <!-- Show Seconds -->
+          <div class="setting-group">
+            <label class="setting-label">Show Seconds</label>
+            <div class="toggle-switch-container">
+              <span class="toggle-label">OFF</span>
+              <div class="toggle-switch active" id="secondsToggle">
+                <div class="toggle-thumb"></div>
+              </div>
+              <span class="toggle-label">ON</span>
+            </div>
+          </div>
+
+          <!-- Show Date -->
+          <div class="setting-group">
+            <label class="setting-label">Show Date</label>
+            <div class="toggle-switch-container">
+              <span class="toggle-label">OFF</span>
+              <div class="toggle-switch active" id="dateToggle">
+                <div class="toggle-thumb"></div>
+              </div>
+              <span class="toggle-label">ON</span>
+            </div>
+          </div>
+
+          <!-- Timezone -->
+          <div class="setting-group">
+            <label class="setting-label">Timezone</label>
+            <div class="timezone-search-container">
+              <input type="text" class="timezone-search" id="timezoneSearch" placeholder="Search timezone..." autocomplete="off">
+              <div class="timezone-dropdown" id="timezoneDropdown"></div>
+            </div>
+            <div class="current-timezone" id="currentTimezone"></div>
+          </div>
+
+          <!-- Dark Mode -->
+          <div class="setting-group">
+            <label class="setting-label">Dark Mode</label>
+            <div class="toggle-switch-container">
+              <span class="toggle-label">OFF</span>
+              <div class="toggle-switch active" id="darkModeToggle">
+                <div class="toggle-thumb"></div>
+              </div>
+              <span class="toggle-label">ON</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-footer">
+          <div class="shortcut-hints">
+            <span><kbd>S</kbd> Settings</span>
+            <span><kbd>Esc</kbd> Close</span>
+            <span><kbd>⌘F</kbd> Fullscreen</span>
+            <span><kbd>⌘Q</kbd> Quit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="clock.js"></script>
+</body>
+</html>

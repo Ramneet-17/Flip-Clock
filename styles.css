@@ -1,0 +1,728 @@
+/* ============================================
+   FLIP CLOCK — Pure Black & White Theme
+   ============================================ */
+
+:root {
+  /* Dark mode (default) */
+  --bg: #000000;
+  --card-bg: #1a1a1a;
+  --card-bg-alt: #222222;
+  --digit-color: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.5);
+  --separator-color: #ffffff;
+  --divider-color: rgba(0, 0, 0, 0.7);
+  --card-border-color: rgba(255, 255, 255, 0.08);
+  --card-shadow-color: rgba(0, 0, 0, 0.6);
+  --settings-bg: rgba(20, 20, 20, 0.92);
+  --settings-border: rgba(255, 255, 255, 0.1);
+  --input-bg: rgba(255, 255, 255, 0.06);
+  --hover-bg: rgba(255, 255, 255, 0.08);
+
+  /* Accent (optional, used for toggles/highlights) */
+  --accent: #ffffff;
+
+  /* Sizing — larger cards */
+  --card-width: clamp(110px, 16vw, 240px);
+  --card-height: clamp(160px, 24vw, 350px);
+  --digit-size: clamp(72px, 14vw, 210px);
+  --gap: clamp(8px, 1.2vw, 18px);
+  --group-gap: clamp(5px, 0.6vw, 10px);
+  --card-gap: clamp(4px, 0.5vw, 8px);
+
+  /* Card */
+  --card-radius: 14px;
+
+  /* Animation — tighter handoff for seamless flip */
+  --flip-duration: 0.5s;
+}
+
+/* Light mode overrides */
+[data-mode="light"] {
+  --bg: #f0f0f0;
+  --card-bg: #e0e0e0;
+  --card-bg-alt: #d4d4d4;
+  --digit-color: #000000;
+  --text-primary: #000000;
+  --text-secondary: rgba(0, 0, 0, 0.45);
+  --separator-color: #000000;
+  --divider-color: rgba(0, 0, 0, 0.15);
+  --card-border-color: rgba(0, 0, 0, 0.08);
+  --card-shadow-color: rgba(0, 0, 0, 0.15);
+  --settings-bg: rgba(240, 240, 240, 0.95);
+  --settings-border: rgba(0, 0, 0, 0.1);
+  --input-bg: rgba(0, 0, 0, 0.05);
+  --hover-bg: rgba(0, 0, 0, 0.06);
+  --accent: #000000;
+}
+
+/* Reset */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: none;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+
+/* Show cursor on interactive elements */
+button, input, .toggle-switch, .color-swatch, .timezone-dropdown, .settings-panel {
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+input {
+  cursor: text;
+}
+
+/* ============================================
+   APP CONTAINER
+   ============================================ */
+
+.app-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  position: relative;
+  transition: background 0.4s ease;
+}
+
+/* ============================================
+   TOP BUTTONS
+   ============================================ */
+
+.settings-btn,
+.quit-btn {
+  position: absolute;
+  top: 24px;
+  z-index: 100;
+  background: var(--hover-bg);
+  border: 1px solid var(--card-border-color);
+  color: var(--text-secondary);
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.settings-btn {
+  right: 80px;
+}
+
+.quit-btn {
+  right: 24px;
+}
+
+.app-container:hover .settings-btn,
+.app-container:hover .quit-btn {
+  opacity: 1;
+}
+
+.settings-btn:hover,
+.quit-btn:hover {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+.settings-btn:active,
+.quit-btn:active {
+  transform: scale(0.95);
+}
+
+/* Show cursor when hovering the container */
+.app-container:hover {
+  cursor: default;
+}
+
+/* ============================================
+   CLOCK WRAPPER
+   ============================================ */
+
+.clock-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  z-index: 1;
+}
+
+.clock-container {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap);
+}
+
+/* ============================================
+   FLIP GROUP (pair of cards + label)
+   ============================================ */
+
+.flip-group {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--group-gap);
+  position: relative;
+}
+
+.group-label {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(9px, 1vw, 13px);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ============================================
+   SEPARATOR
+   ============================================ */
+
+.separator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 3vw, 40px);
+  height: var(--card-height);
+  padding: 0 clamp(4px, 0.6vw, 12px);
+}
+
+.sep-dot {
+  width: clamp(10px, 1.4vw, 18px);
+  height: clamp(10px, 1.4vw, 18px);
+  border-radius: 50%;
+  background: var(--separator-color);
+  opacity: 0.9;
+  transition: background 0.4s ease;
+}
+
+/* ============================================
+   FLIP CARD
+   ============================================ */
+
+.flip-card {
+  width: var(--card-width);
+  height: var(--card-height);
+  position: relative;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Common face styling */
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: calc(50% - var(--card-gap) / 2);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-face .digit {
+  font-family: 'Roboto Mono', monospace;
+  font-size: var(--digit-size);
+  font-weight: 700;
+  color: var(--digit-color);
+  line-height: 1;
+  display: block;
+  transition: color 0.4s ease;
+}
+
+/* ---- TOP HALF (static) ---- */
+.card-top {
+  top: 0;
+  left: 0;
+  background: var(--card-bg);
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
+  border: 1px solid var(--card-border-color);
+  border-bottom: none;
+  align-items: flex-end;
+  z-index: 2;
+}
+
+.card-top .digit {
+  transform: translateY(50%);
+}
+
+/* ---- BOTTOM HALF (static) ---- */
+.card-bottom {
+  top: calc(50% + var(--card-gap) / 2);
+  left: 0;
+  background: var(--card-bg-alt);
+  border-radius: 0 0 var(--card-radius) var(--card-radius);
+  border: 1px solid var(--card-border-color);
+  border-top: none;
+  align-items: flex-start;
+  z-index: 1;
+}
+
+.card-bottom .digit {
+  transform: translateY(-50%);
+}
+
+/* ---- FLAP TOP (flips DOWN over bottom: shows OLD digit) ---- */
+.card-flap-top {
+  top: 0;
+  left: 0;
+  background: var(--card-bg);
+  border-radius: var(--card-radius) var(--card-radius) 0 0;
+  border: 1px solid var(--card-border-color);
+  border-bottom: none;
+  align-items: flex-end;
+  transform-origin: bottom center;
+  z-index: 5;
+  transform: rotateX(0deg);
+}
+
+.card-flap-top .digit {
+  transform: translateY(50%);
+}
+
+/* ---- FLAP BOTTOM (initially hidden, flips into view: shows NEW digit) ---- */
+.card-flap-bottom {
+  top: calc(50% + var(--card-gap) / 2);
+  left: 0;
+  background: var(--card-bg-alt);
+  border-radius: 0 0 var(--card-radius) var(--card-radius);
+  border: 1px solid var(--card-border-color);
+  border-top: none;
+  align-items: flex-start;
+  transform-origin: top center;
+  z-index: 4;
+  transform: rotateX(90deg);
+}
+
+.card-flap-bottom .digit {
+  transform: translateY(-50%);
+}
+
+/* ---- FLIP ANIMATION ----
+   The top flap folds down, then the bottom flap unfolds.
+   Tight handoff so it looks like one piece flipping over.
+   ---- */
+.flip-card.flipping .card-flap-top {
+  animation: flipTop calc(var(--flip-duration) * 0.5) ease-in forwards;
+}
+
+.flip-card.flipping .card-flap-bottom {
+  animation: flipBottom calc(var(--flip-duration) * 0.5) ease-out forwards;
+  animation-delay: calc(var(--flip-duration) * 0.45);
+}
+
+@keyframes flipTop {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-90deg);
+  }
+}
+
+@keyframes flipBottom {
+  0% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+/* Card shadow */
+.flip-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--card-radius);
+  box-shadow: 0 6px 24px var(--card-shadow-color);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   AM/PM INDICATOR
+   ============================================ */
+
+.ampm-indicator {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(18px, 2.2vw, 32px);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.15em;
+  min-height: 36px;
+}
+
+/* ============================================
+   DATE DISPLAY
+   ============================================ */
+
+.date-display {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(14px, 1.5vw, 22px);
+  font-weight: 300;
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+  transition: color 0.4s ease;
+}
+
+.timezone-display {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(11px, 1vw, 15px);
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+  transition: color 0.4s ease;
+}
+
+/* ============================================
+   SETTINGS OVERLAY
+   ============================================ */
+
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.settings-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.settings-panel {
+  background: var(--settings-bg);
+  border: 1px solid var(--settings-border);
+  border-radius: 20px;
+  padding: 32px;
+  width: min(440px, 90vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+  transform: translateY(20px) scale(0.95);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+}
+
+.settings-overlay.open .settings-panel {
+  transform: translateY(0) scale(1);
+}
+
+/* Settings Header */
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.settings-header h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.settings-close {
+  background: var(--hover-bg);
+  border: 1px solid var(--card-border-color);
+  color: var(--text-secondary);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.settings-close:hover {
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+/* Setting Group */
+.setting-group {
+  margin-bottom: 24px;
+}
+
+.setting-label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 12px;
+}
+
+/* Toggle Switch */
+.toggle-switch-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  min-width: 30px;
+}
+
+.toggle-switch {
+  width: 50px;
+  height: 28px;
+  background: var(--hover-bg);
+  border-radius: 14px;
+  position: relative;
+  transition: background 0.3s ease;
+  border: 1px solid var(--card-border-color);
+}
+
+.toggle-switch.active {
+  background: var(--text-primary);
+  border-color: transparent;
+}
+
+.toggle-thumb {
+  width: 22px;
+  height: 22px;
+  background: var(--bg);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active .toggle-thumb {
+  transform: translateX(22px);
+}
+
+/* Timezone Search */
+.timezone-search-container {
+  position: relative;
+}
+
+.timezone-search {
+  width: 100%;
+  padding: 10px 16px;
+  background: var(--input-bg);
+  border: 1px solid var(--card-border-color);
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.timezone-search::placeholder {
+  color: var(--text-secondary);
+}
+
+.timezone-search:focus {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 2px var(--hover-bg);
+}
+
+.timezone-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background: var(--settings-bg);
+  border: 1px solid var(--settings-border);
+  border-radius: 10px;
+  margin-top: 4px;
+  display: none;
+  z-index: 10;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.timezone-dropdown.open {
+  display: block;
+}
+
+.timezone-option {
+  padding: 10px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-bottom: 1px solid var(--card-border-color);
+}
+
+.timezone-option:last-child {
+  border-bottom: none;
+}
+
+.timezone-option:hover {
+  background: var(--hover-bg);
+}
+
+.timezone-option.selected {
+  font-weight: 600;
+  background: var(--hover-bg);
+}
+
+.current-timezone {
+  margin-top: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Timezone dropdown scrollbar */
+.timezone-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.timezone-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.timezone-dropdown::-webkit-scrollbar-thumb {
+  background: var(--hover-bg);
+  border-radius: 3px;
+}
+
+/* Color Swatches */
+.color-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--swatch-color);
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+}
+
+.color-swatch.active {
+  border-color: var(--text-primary);
+}
+
+.color-swatch.active::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Settings Footer */
+.settings-footer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--card-border-color);
+}
+
+.shortcut-hints {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.shortcut-hints kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--hover-bg);
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  margin-right: 4px;
+  border: 1px solid var(--card-border-color);
+}
+
+/* ============================================
+   SECONDS HIDDEN STATE
+   ============================================ */
+
+/* Hide the seconds group (5th child) and the separator before it (4th child) */
+.clock-container.hide-seconds > :nth-child(4),
+.clock-container.hide-seconds > :nth-child(5) {
+  display: none;
+}
+
+/* ============================================
+   SETTINGS PANEL SCROLLBAR
+   ============================================ */
+
+.settings-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.settings-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.settings-panel::-webkit-scrollbar-thumb {
+  background: var(--hover-bg);
+  border-radius: 3px;
+}
